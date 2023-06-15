@@ -1,6 +1,6 @@
 import React from "react";
 import { AiOutlineEye } from "react-icons/ai";
-export default function FrequentlyOpened({ myFiles }) {
+export default function FrequentlyOpened({ myFiles, handleFileClick }) {
   let frequentlyOpenedFiles = myFiles
     .filter((file) => file.views > 0)
     .sort((a, b) => b.views - a.views)
@@ -9,7 +9,7 @@ export default function FrequentlyOpened({ myFiles }) {
   return (
     <div style={{ width: "100%", padding: 10 }}>
       <p style={{ fontWeight: "bold", paddingBottom: "0.5rem" }}>
-        Frequently opened files
+        Frequently opened files ({frequentlyOpenedFiles.length})
       </p>
       <div style={{ display: "flex", gap: "10px" }}>
         {frequentlyOpenedFiles.length === 0 ? (
@@ -27,7 +27,9 @@ export default function FrequentlyOpened({ myFiles }) {
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
+                  cursor: "pointer",
                 }}
+                onClick={() => handleFileClick(file)}
               >
                 <div>
                   <p>{file.name}</p>
@@ -41,7 +43,7 @@ export default function FrequentlyOpened({ myFiles }) {
                   }}
                 >
                   <AiOutlineEye color="blue" size={20} />
-                  <p>{file.views}</p>
+                  <p style={{ color: "grey" }}>{file.views}</p>
                 </div>
               </div>
             ) : null;

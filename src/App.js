@@ -50,6 +50,21 @@ export default function App() {
     },
   };
 
+  const handleFileClick = (file) => {
+    if (selectedFile && selectedFile.id === file.id) {
+      setSelectedFile(null);
+      return;
+    }
+    setMyFiles((prev) =>
+      prev.map((currFile) =>
+        currFile.id === file.id
+          ? { ...currFile, views: currFile.views + 1 } // Increment views of the clicked file
+          : currFile
+      )
+    );
+    setSelectedFile(file);
+  };
+
   return (
     <>
       {showChartModal && (
@@ -191,7 +206,10 @@ export default function App() {
               Delete
             </button>
           </div>
-          <FrequentlyOpened myFiles={myFiles} />
+          <FrequentlyOpened
+            myFiles={myFiles}
+            handleFileClick={(file) => handleFileClick(file)}
+          />
           <div style={styles.fileContainer}>
             <div style={{ width: "100%", padding: 10 }}>
               {myFiles.map((file) => {
@@ -201,21 +219,7 @@ export default function App() {
                       style={styles.file}
                       className="files"
                       key={file.id}
-                      onClick={() => {
-                        if (selectedFile && selectedFile.id === file.id) {
-                          setSelectedFile(null);
-                          return;
-                        }
-                        setMyFiles((prev) =>
-                          prev.map((currFile) =>
-                            currFile.id === file.id
-                              ? { ...currFile, views: currFile.views++ }
-                              : currFile
-                          )
-                        );
-                        console.log(myFiles);
-                        setSelectedFile(file);
-                      }}
+                      onClick={() => handleFileClick(file)}
                     >
                       <p>{file.name}</p>
                     </div>
