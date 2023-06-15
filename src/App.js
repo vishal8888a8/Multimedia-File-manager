@@ -16,6 +16,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import FrequentlyOpened from "./components/FrequentlyOpened";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -190,6 +191,7 @@ export default function App() {
               Delete
             </button>
           </div>
+          <FrequentlyOpened myFiles={myFiles} />
           <div style={styles.fileContainer}>
             <div style={{ width: "100%", padding: 10 }}>
               {myFiles.map((file) => {
@@ -204,6 +206,14 @@ export default function App() {
                           setSelectedFile(null);
                           return;
                         }
+                        setMyFiles((prev) =>
+                          prev.map((currFile) =>
+                            currFile.id === file.id
+                              ? { ...currFile, views: currFile.views++ }
+                              : currFile
+                          )
+                        );
+                        console.log(myFiles);
                         setSelectedFile(file);
                       }}
                     >
