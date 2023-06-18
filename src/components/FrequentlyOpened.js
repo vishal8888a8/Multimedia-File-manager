@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { AiOutlineEye } from "react-icons/ai";
 export default function FrequentlyOpened({ myFiles, handleFileClick }) {
-  let frequentlyOpenedFiles = myFiles
-    .filter((file) => file.views > 0)
-    .sort((a, b) => b.views - a.views)
-    .slice(0, 5);
+  const [frequentlyOpenedFiles, setFrequentlyOpenedFiles] = useState([]);
+
+  useEffect(() => {
+    const updatedFrequentlyOpenedFiles = myFiles
+      .filter((file) => file.views > 0)
+      .sort((a, b) => b.views - a.views)
+      .slice(0, 5);
+
+    setFrequentlyOpenedFiles(updatedFrequentlyOpenedFiles);
+  }, [myFiles]);
 
   return (
     <div style={{ width: "100%", padding: 10 }}>
