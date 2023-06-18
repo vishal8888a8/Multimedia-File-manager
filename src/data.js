@@ -41,4 +41,18 @@ export const data = [
     path: "/file-server/image3.jpg",
     views: 0,
   },
+  {
+    id: 7,
+    name: "Image File 4",
+    type: "image",
+    path: "/file-server/image4.jpg",
+    views: 0,
+  },
+  {
+    id: 8,
+    name: "Image File 5",
+    type: "image",
+    path: "/file-server/image5.jpg",
+    views: 0,
+  },
 ];

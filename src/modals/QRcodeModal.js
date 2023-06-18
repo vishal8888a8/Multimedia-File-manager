@@ -24,7 +24,7 @@ export default function QRcodeModal({
     saveAs(blob, `qr-code.${format}`);
   };
 
-  //thanks to the author of https://stackoverflow.com/questions/12168909/blob-from-dataurl for below code snippet
+  //thanks to the author of answer https://stackoverflow.com/questions/12168909/blob-from-dataurl for below code snippet
   const dataURLtoBlob = (dataURI) => {
     var byteString = atob(dataURI.split(",")[1]);
     var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
@@ -55,7 +55,7 @@ export default function QRcodeModal({
           value={QRcodeUrl}
           renderAs="canvas"
         />
-        <div style={{ textAlign: "center" }}>
+        <div style={{ textAlign: "center", color: "blue" }}>
           <p>{selectedFile && selectedFile.name}</p>
         </div>
         <div style={styles.saveButtonsContainer}>

@@ -7,7 +7,7 @@ export default function FrequentlyOpened({ myFiles, handleFileClick }) {
     const updatedFrequentlyOpenedFiles = myFiles
       .filter((file) => file.views > 0)
       .sort((a, b) => b.views - a.views)
-      .slice(0, 6);
+      .slice(0, 5);
 
     setFrequentlyOpenedFiles(updatedFrequentlyOpenedFiles);
   }, [myFiles]);
