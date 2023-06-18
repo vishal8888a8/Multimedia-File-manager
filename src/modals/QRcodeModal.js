@@ -24,58 +24,32 @@ export default function QRcodeModal({
     saveAs(blob, `qr-code.${format}`);
   };
 
-  const dataURLtoBlob = (dataURL) => {
-    const parts = dataURL.split(";base64,");
-    const contentType = parts[0].split(":")[1];
-    const raw = window.atob(parts[1]);
-    const rawLength = raw.length;
-    const uInt8Array = new Uint8Array(rawLength);
-
-    for (let i = 0; i < rawLength; ++i) {
-      uInt8Array[i] = raw.charCodeAt(i);
+  //thanks to the author of https://stackoverflow.com/questions/12168909/blob-from-dataurl for below code snippet
+  const dataURLtoBlob = (dataURI) => {
+    var byteString = atob(dataURI.split(",")[1]);
+    var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+    var ab = new ArrayBuffer(byteString.length);
+    var ia = new Uint8Array(ab);
+    for (var i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
     }
-
-    return new Blob([uInt8Array], { type: contentType });
+    var blob = new Blob([ab], { type: mimeString });
+    return blob;
   };
 
   return (
     <Modal
       isOpen={isModalOpen}
       onRequestClose={() => setIsModalOpen(false)}
-      style={{
-        content: {
-          width: "400px",
-          height: "330px",
-          margin: "auto",
-        },
-        overlay: {
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-        },
-      }}
+      style={styles.modal}
     >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
+      <div style={styles.modalHeader}>
         <h2>Save QR Code</h2>
         <RxCross1 onClick={() => setIsModalOpen(false)} />
       </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "1rem",
-        }}
-      >
+      <div style={styles.modalContainer}>
         <QRCode
-          style={{
-            margin: "auto",
-            border: "2px solid black",
-            marginTop: "1rem",
-          }}
+          style={styles.QRcode}
           includeMargin={true}
           id="qr-code"
           value={QRcodeUrl}
@@ -84,29 +58,15 @@ export default function QRcodeModal({
         <div style={{ textAlign: "center" }}>
           <p>{selectedFile && selectedFile.name}</p>
         </div>
-        <div
-          style={{ display: "flex", gap: "1.2rem", justifyContent: "center" }}
-        >
+        <div style={styles.saveButtonsContainer}>
           <button
-            style={{
-              padding: "10px",
-              border: "none",
-              borderRadius: "0.5rem",
-              cursor: "pointer",
-              fontWeight: "bold",
-            }}
+            style={styles.saveButtons}
             onClick={() => handleSaveQRCode("svg")}
           >
             Save as SVG
           </button>
           <button
-            style={{
-              padding: "10px",
-              border: "none",
-              borderRadius: "0.5rem",
-              cursor: "pointer",
-              fontWeight: "bold",
-            }}
+            style={styles.saveButtons}
             onClick={() => handleSaveQRCode("png")}
           >
             Save as PNG
@@ -116,3 +76,43 @@ export default function QRcodeModal({
     </Modal>
   );
 }
+
+const styles = {
+  saveButtons: {
+    padding: "10px",
+    border: "none",
+    borderRadius: "0.5rem",
+    cursor: "pointer",
+    fontWeight: "bold",
+  },
+  saveButtonsContainer: {
+    display: "flex",
+    gap: "1.2rem",
+    justifyContent: "center",
+  },
+  QRcode: {
+    margin: "auto",
+    border: "2px solid black",
+    marginTop: "1rem",
+  },
+  modal: {
+    content: {
+      width: "400px",
+      height: "330px",
+      margin: "auto",
+    },
+    overlay: {
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+    },
+  },
+  modalHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  modalContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+  },
+};
