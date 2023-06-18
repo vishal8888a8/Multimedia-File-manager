@@ -17,6 +17,7 @@ import {
   Legend,
 } from "chart.js";
 import FrequentlyOpened from "./components/FrequentlyOpened";
+import QRcodeModal from "./modals/QRcodeModal";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -32,6 +33,7 @@ export default function App() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [filePath, setFilePath] = useState("/file-server/");
   const [showChartModal, setShowChartModal] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     setMyFiles(data);
@@ -205,6 +207,16 @@ export default function App() {
             >
               Delete
             </button>
+            <button
+              style={styles.controlButton}
+              onClick={() => {
+                if (selectedFile) {
+                  setIsModalOpen(true);
+                }
+              }}
+            >
+              Save QR code
+            </button>
           </div>
           <FrequentlyOpened
             myFiles={myFiles}
@@ -261,6 +273,11 @@ export default function App() {
           </div>
         </div>
       </div>
+      <QRcodeModal
+        selectedFile={selectedFile}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
     </>
   );
 }
